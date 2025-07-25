@@ -2,4 +2,4 @@ logsBucket: gs://testasdx123
 steps:
   - name: 'alpine'
     entrypoint: 'echo'
-    args: ['hello worldd']
+    args: ['hello worldcd']
